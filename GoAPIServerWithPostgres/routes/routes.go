@@ -7,11 +7,11 @@ import (
 
 func HandleRequests() {
 	server := gin.Default()
-	server.GET("/alunos", controllers.ExibeTodosAlunos)
-	server.POST("/alunos", controllers.CriaNovoAluno)
-	server.GET("/alunos/:id", controllers.FindbyId)
-	server.DELETE("/alunos/:id", controllers.DeletaAluno)
-	server.PATCH("/alunos/:id", controllers.EditaAluno)
-	server.GET("/alunos/cpf/:cpf", controllers.BuscaAlunoPorCPF)
+	server.GET("/students", controllers.FindAll)
+	server.POST("/students", controllers.Create)
+	server.GET("/students/:id", controllers.FindById)
+	server.DELETE("/students/:id", controllers.Delete)
+	server.PATCH("/students/:id", controllers.Update)
+	server.GET("/students/cpf/:cpf", controllers.FindByCpf)
 	server.Run(":8080")
 }

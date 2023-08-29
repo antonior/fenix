@@ -8,74 +8,74 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func ExibeTodosAlunos(c *gin.Context) {
-	var alunos []models.Aluno
-	database.DB.Find(&alunos)
-	c.JSON(http.StatusOK, alunos)
+func FindAll(c *gin.Context) {
+	var students []models.Student
+	database.DB.Find(&students)
+	c.JSON(http.StatusOK, students)
 }
 
-func CriaNovoAluno(c *gin.Context) {
-	var aluno models.Aluno
-	if err := c.ShouldBindJSON(&aluno); err != nil {
+func Create(c *gin.Context) {
+	var student models.Student
+	if err := c.ShouldBindJSON(&student); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	database.DB.Create(&aluno)
-	c.JSON(http.StatusOK, aluno)
+	database.DB.Create(&student)
+	c.JSON(http.StatusOK, student)
 }
 
-func DeletaAluno(c *gin.Context) {
+func Delete(c *gin.Context) {
 	id := c.Params.ByName("id")
 
-	database.DB.Delete(&models.Aluno{}, id)
+	database.DB.Delete(&models.Student{}, id)
 }
 
-func FindbyId(c *gin.Context) {
+func FindById(c *gin.Context) {
 	id := c.Params.ByName("id")
-	var aluno models.Aluno
+	var student models.Student
 
-	tx := database.DB.First(&aluno, id)
+	tx := database.DB.First(&student, id)
 	if tx.RowsAffected == 0 {
-		c.JSON(http.StatusNotFound, gin.H{"Not Found": "Aluno não encontrado"})
+		c.JSON(http.StatusNotFound, gin.H{"Not Found": "Student not found"})
 	} else {
-		c.JSON(http.StatusOK, aluno)
+		c.JSON(http.StatusOK, student)
 	}
 
 }
 
-func EditaAluno(c *gin.Context) {
-	var aluno models.Aluno
+func Update(c *gin.Context) {
+	var student models.Student
 	id := c.Params.ByName("id")
 
-	if tx := database.DB.First(&aluno, id); tx.RowsAffected == 0 {
-		c.JSON(http.StatusNotFound, gin.H{"Not Found": "Aluno não encontrado"})
+	if tx := database.DB.First(&student, id); tx.RowsAffected == 0 {
+		c.JSON(http.StatusNotFound, gin.H{"Not Found": "Student not found"})
 		return
 	}
 
-	if err := c.ShouldBindJSON(&aluno); err != nil {
+	if err := c.ShouldBindJSON(&student); err != nil {
 		c.JSON(http.StatusBadRequest, err.Error())
 		return
 	}
 
-	if tx := database.DB.Model(&aluno).UpdateColumns(aluno); tx.Error != nil {
+	if tx := database.DB.Model(&student).UpdateColumns(student); tx.Error != nil {
 		c.JSON(http.StatusBadRequest, tx.Error.Error())
 		return
 	}
 
-	c.JSON(http.StatusOK, aluno)
+	c.JSON(http.StatusOK, student)
 }
 
-func BuscaAlunoPorCPF(c *gin.Context) {
-	var aluno models.Aluno
+func FindByCpf(c *gin.Context) {
+	var student models.Student
 	cpf := c.Params.ByName("cpf")
 
-	database.DB.Where(&models.Aluno{CPF: cpf}).First(&aluno)
+	database.DB.Where(&models.Student{CPF: cpf}).First(&student)
 
-	if aluno.ID == 0 {
-		c.JSON(http.StatusNotFound, gin.H{"Not Found": "Aluno não encontrado"})
+	if student.ID == 0 {
+		c.JSON(http.StatusNotFound, gin.H{"Not Found": "Student not found"})
 		return
 	}
 
-	c.JSON(http.StatusOK, aluno)
+	c.JSON(http.StatusOK, student)
 }
