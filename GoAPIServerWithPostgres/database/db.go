@@ -1,6 +1,7 @@
 package database
 
 import (
+	"fmt"
 	"log"
 
 	"gitgub.com/antonior/fenix/GoAPIServerWithPostgres/models"
@@ -13,11 +14,13 @@ var (
 	err error
 )
 
-func ConnectToDatabase() {
-	connectionString := "host=localhost user=root password=root dbname=root port=5432 sslmode=disable"
+func ConnectToDatabase(config models.Config) {
+	connectionString := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable", config.DbServer, config.DbUser, config.DbPassword, config.DbName, config.DbPort)
+
 	DB, err = gorm.Open(postgres.Open(connectionString))
 	if err != nil {
-		log.Panic("Error connecting to database")
+		log.Panic("Error connecting to database", err.Error())
 	}
+
 	DB.AutoMigrate(&models.Student{})
 }
