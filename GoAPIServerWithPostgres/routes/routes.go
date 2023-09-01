@@ -13,5 +13,6 @@ func HandleRequests() {
 	server.DELETE("/students/:id", controllers.Delete)
 	server.PATCH("/students/:id", controllers.Update)
 	server.GET("/students/cpf/:cpf", controllers.FindByCpf)
+	server.POST("/longtask", controllers.HandleLongTaskCall)
 	server.Run(":8080")
 }
