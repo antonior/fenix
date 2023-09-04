@@ -3,12 +3,16 @@ package controllers
 import (
 	"net/http"
 
-	"gitgub.com/antonior/fenix/GoAPIServerWithPostgres/database"
 	"gitgub.com/antonior/fenix/GoAPIServerWithPostgres/models"
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 )
 
-func RegisterUser(context *gin.Context) {
+type UserController struct {
+	DB *gorm.DB
+}
+
+func (ctrl *UserController) RegisterUser(context *gin.Context) {
 	var user models.User
 	if err := context.ShouldBindJSON(&user); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -20,7 +24,7 @@ func RegisterUser(context *gin.Context) {
 		context.Abort()
 		return
 	}
-	record := database.DB.Create(&user)
+	record := ctrl.DB.Create(&user)
 	if record.Error != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{"error": record.Error.Error()})
 		context.Abort()

@@ -8,6 +8,6 @@ import (
 
 func main() {
 	config := models.LoadConfigFile()
-	database.ConnectToDatabase(config)
-	routes.HandleRequests()
+	db := database.ConnectToDatabase(config)
+	routes.HandleRequests(db)
 }

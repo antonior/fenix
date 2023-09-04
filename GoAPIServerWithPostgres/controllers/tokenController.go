@@ -4,18 +4,22 @@ import (
 	"net/http"
 
 	"gitgub.com/antonior/fenix/GoAPIServerWithPostgres/auth"
-	"gitgub.com/antonior/fenix/GoAPIServerWithPostgres/database"
 	"gitgub.com/antonior/fenix/GoAPIServerWithPostgres/models"
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 )
 
-type TokenRequest struct {
+type TokenController struct {
+	DB *gorm.DB
+}
+
+type tokenRequest struct {
 	Email    string `json:"email"`
 	Password string `json:"password"`
 }
 
-func GenerateToken(context *gin.Context) {
-	var request TokenRequest
+func (ctrl *TokenController) GenerateToken(context *gin.Context) {
+	var request tokenRequest
 	var user models.User
 	if err := context.ShouldBindJSON(&request); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -23,7 +27,7 @@ func GenerateToken(context *gin.Context) {
 		return
 	}
 	// check if email exists and password is correct
-	record := database.DB.Where("email = ?", request.Email).First(&user)
+	record := ctrl.DB.Where("email = ?", request.Email).First(&user)
 	if record.Error != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{"error": record.Error.Error()})
 		context.Abort()

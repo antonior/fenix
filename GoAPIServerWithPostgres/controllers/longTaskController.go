@@ -8,12 +8,14 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+type LongtaskController struct{}
+
 type longCallConfig struct {
 	quantityOfTasks   int
 	quantityOfWorkers int
 }
 
-func HandleLongTaskCall(c *gin.Context) {
+func (ctrl *LongtaskController) HandleLongTaskCall(c *gin.Context) {
 	var longCallConfig longCallConfig
 	if err := c.ShouldBindJSON(&longCallConfig); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -30,13 +32,13 @@ func HandleLongTaskCall(c *gin.Context) {
 		return
 	}
 
-	elapsedSeconds := runLongTasksCall(longCallConfig)
+	elapsedSeconds := ctrl.runLongTasksCall(longCallConfig)
 
 	c.JSON(http.StatusOK, elapsedSeconds)
 
 }
 
-func runLongTasksCall(longCallConfig longCallConfig) (durationInSeconds float64) {
+func (ctrl *LongtaskController) runLongTasksCall(longCallConfig longCallConfig) (durationInSeconds float64) {
 	executionStart := time.Now()
 	remainingTasks := make(chan int)
 	producedResults := make(chan int)
