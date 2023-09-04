@@ -12,15 +12,18 @@ func HandleRequests() {
 	{
 		api.POST("/token", controllers.GenerateToken)
 		api.POST("/user/register", controllers.RegisterUser)
+
 		secured := api.Group("/secured").Use(middlewares.Auth())
 		{
-			secured.GET("/students", controllers.FindAll)
-			secured.POST("/students", controllers.Create)
-			secured.GET("/students/:id", controllers.FindById)
-			secured.DELETE("/students/:id", controllers.Delete)
-			secured.PATCH("/students/:id", controllers.Update)
-			secured.GET("/students/cpf/:cpf", controllers.FindByCpf)
+			secured.GET("/clients", controllers.FindAll)
+			secured.POST("/clients", controllers.Create)
+			secured.GET("/clients/:id", controllers.FindById)
+			secured.DELETE("/clients/:id", controllers.Delete)
+			secured.PATCH("/clients/:id", controllers.Update)
+			secured.GET("/clients/cpf/:cpf", controllers.FindByCpf)
+
 			secured.POST("/longtask", controllers.HandleLongTaskCall)
+
 			secured.GET("/ping", controllers.Ping)
 		}
 	}

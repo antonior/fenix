@@ -22,5 +22,5 @@ func ConnectToDatabase(config models.Config) {
 		log.Panic("Error connecting to database", err.Error())
 	}
 
-	DB.AutoMigrate(&models.Student{}, &models.User{})
+	DB.AutoMigrate(&models.Client{}, &models.User{})
 }

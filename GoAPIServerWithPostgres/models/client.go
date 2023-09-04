@@ -2,7 +2,7 @@ package models
 
 import "gorm.io/gorm"
 
-type Student struct {
+type Client struct {
 	gorm.Model
 	Name string `json:"name"`
 	CPF  string `json:"cpf"`
