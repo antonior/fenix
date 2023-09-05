@@ -19,6 +19,11 @@ func (ctrl *UserController) RegisterUser(context *gin.Context) {
 		context.Abort()
 		return
 	}
+	if err := user.Validate(); err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		context.Abort()
+		return
+	}
 	if err := user.HashPassword(user.Password); err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		context.Abort()

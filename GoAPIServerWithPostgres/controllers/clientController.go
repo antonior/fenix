@@ -25,6 +25,11 @@ func (ctrl *ClientController) Create(c *gin.Context) {
 		return
 	}
 
+	if err := client.Validate(); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
 	ctrl.DB.Create(&client)
 	c.JSON(http.StatusOK, client)
 }
@@ -32,7 +37,10 @@ func (ctrl *ClientController) Create(c *gin.Context) {
 func (ctrl *ClientController) Delete(c *gin.Context) {
 	id := c.Params.ByName("id")
 
-	ctrl.DB.Delete(&models.Client{}, id)
+	if tx := ctrl.DB.Delete(&models.Client{}, id); tx.RowsAffected == 0 {
+		c.JSON(http.StatusNotFound, gin.H{"error": "client not found"})
+		return
+	}
 }
 
 func (ctrl *ClientController) FindById(c *gin.Context) {
