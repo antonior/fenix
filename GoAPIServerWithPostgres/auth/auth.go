@@ -7,6 +7,7 @@ import (
 	"github.com/dgrijalva/jwt-go"
 )
 
+// TODO: load from configuration file
 var jwtKey = []byte("supersecretkey")
 
 type JWTClaim struct {
