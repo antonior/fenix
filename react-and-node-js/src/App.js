@@ -1,12 +1,20 @@
-import './App.css';
+import Header from './components/Header'
+import Search from './components/Search'
+import RecentLaunches from './components/RecentLaunches'
+import styled from 'styled-components'
 
-function App() {
+const AppContainer = styled.div`
+  height: 100vh;
+  width: 100vw;
+  background-image: linear-gradient(90deg, #002F52 35%, #326589 165%);
+`
+
+export default function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-      </header>
-    </div>
+    <AppContainer>
+      <Header/>
+      <Search/>
+      <RecentLaunches/>
+    </AppContainer>
   );
 }
-
-export default App;
