@@ -1,44 +1,35 @@
 const fs = require("fs")
+const Book = require("../database/book")
 
-function getAllBooks() {
-    return JSON.parse(fs.readFileSync("books.json"))
+async function getAllBooks() {
+    return await Book.findAll();
 }
 
-function getBookById(id) {
-    return (
-        JSON.parse(fs.readFileSync("books.json"))
-        .filter(livro => livro.id === id)[0]
-    )
+async function getBookById(id) {
+    return await Book.findByPk(id)
 }
 
-function addBook(newBook) {
-    const currentBooks = JSON.parse(fs.readFileSync("books.json"))
-    const newBookList = [ ...currentBooks, newBook ]
-    fs.writeFileSync("books.json", JSON.stringify(newBookList))
+async function addBook(newBook) {
+    await Book.create(newBook)
 }
 
-function editBook(id, changes) {
-    let allBooks = JSON.parse(fs.readFileSync("books.json"))
-    const editedIndex = allBooks.findIndex(book => book.id === id)
-    const editedBook = {...allBooks[editedIndex], ...changes}
-    allBooks[editedIndex] = editedBook
-
-    if (!Number(editedBook.id)) {
-        throw Error("id must be a number")
+async function editBook(id, changes) {
+    let editedBook = await Book.findByPk(id)
+    
+    if (Object.hasOwn(changes, "name")) {
+        editedBook.name = changes.name
     }
+    
     if (!editedBook.name?.length > 0) {
         throw Error("name must not be empty")
     }
     
-    fs.writeFileSync("books.json", JSON.stringify(allBooks))
+    await editedBook.save()
 }
 
-function deleteBook(id) {
-    const remainingBooks = 
-        JSON.parse(fs.readFileSync("books.json"))
-        .filter(book => book.id !== id)
-
-        fs.writeFileSync("books.json", JSON.stringify(remainingBooks))
+async function deleteBook(id) {
+    const book = await Book.findByPk(id)
+    await book.destroy()
 }
 
 module.exports = {

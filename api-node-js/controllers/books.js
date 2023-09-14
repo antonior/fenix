@@ -2,9 +2,9 @@ const { getAllBooks, getBookById, addBook : addBookService, editBook : editBookS
 const HttpStatus = require('http-status-codes')
 
 
-function getBooks(req, res) {
+async function getBooks(req, res) {
     try {
-        const books = getAllBooks()
+        const books = await getAllBooks()
         res.send(books)
     } catch (error) {
         res.status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR)
@@ -12,11 +12,11 @@ function getBooks(req, res) {
     }
 }
 
-function getBook(req, res) {
+async function getBook(req, res) {
     try {
         const id = req.params.id
-        if (id && Number(id)) {
-            const book = getBookById(id)
+        if (Number(id)) {
+            const book = await getBookById(id)
             res.send(book)
         } else {
             res.status(HttpStatus.StatusCodes.UNPROCESSABLE_ENTITY)
@@ -28,12 +28,12 @@ function getBook(req, res) {
     }
 }
 
-function addBook(req, res) {
+async function addBook(req, res) {
     try {
         const newBook = req.body
-        if (!Number(newBook.id)) {
+        if (newBook.id) {
             res.status(HttpStatus.StatusCodes.UNPROCESSABLE_ENTITY)
-            res.send("id must be a number")
+            res.send("Do not set an id. It will be set automatically")
             return
         }
         if (!newBook.name?.length > 0) {
@@ -42,7 +42,7 @@ function addBook(req, res) {
             return
         }
 
-        addBookService(newBook)
+        await addBookService(newBook)
 
         res.status(HttpStatus.StatusCodes.CREATED)
         res.send("Book added")
@@ -52,7 +52,7 @@ function addBook(req, res) {
     }
 }
 
-function editBook(req, res) {
+async function editBook(req, res) {
     try {
         const id = req.params.id
         if (!Number(id)) {
@@ -62,7 +62,7 @@ function editBook(req, res) {
         }
         const changes = req.body
         
-        editBookService(id, changes)
+        await editBookService(id, changes)
 
         res.status(HttpStatus.StatusCodes.OK)
         res.send("Book edited")
@@ -72,11 +72,11 @@ function editBook(req, res) {
     }
 }
 
-function deleteBook(req, res) {
+async function deleteBook(req, res) {
     try {
         const id = req.params.id
-        if (id && Number(id)) {
-            deleteBookService(id)
+        if (Number(id)) {
+            await deleteBookService(id)
             res.send(`Book ${id} deleted`)
         } else {
             res.status(HttpStatus.StatusCodes.UNPROCESSABLE_ENTITY)
