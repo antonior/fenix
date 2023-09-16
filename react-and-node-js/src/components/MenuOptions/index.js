@@ -1,6 +1,7 @@
 import styled from 'styled-components'
+import { Link } from 'react-router-dom'
 
-const menuOptions = ['CATEGORIES', 'BOOKMARKS', 'MY SHELF']
+const menuOptions = ['CATEGORIES', 'BOOKMARKS', 'SHELF']
 
 const MenuOptionsList = styled.ul`
   display: flex;
@@ -21,7 +22,9 @@ export default function MenuOptions() {
     return (
         <MenuOptionsList>
           { menuOptions.map( option => (
-            <MenuOption><p>{option}</p></MenuOption>
+            <Link to={`/${option.toLowerCase()}`}>
+              <MenuOption><p>{option}</p></MenuOption>
+            </Link>
           ))}
         </MenuOptionsList>
     )

@@ -1,7 +1,8 @@
 import Input from "../Input"
 import styled from "styled-components"
-import { useState } from "react"
-import { books } from "./searchData"
+import { useEffect, useState } from "react"
+import { getBooks } from "../../services/books"
+import { insertBookmark as insertBookmarkService } from "../../services/bookmarks"
 
 const SearchContainer = styled.section`
     background-image: linear-gradient(90deg, #002F52 35%, #326589 165%);
@@ -45,6 +46,22 @@ const Book = styled.div`
 
 export default function Search() {
     const [searchedBooks, setSearchedBooks] = useState([])
+    const [books, setBooks] = useState([])
+
+    useEffect( () => {
+        fetchBooks()
+    }, [])
+
+    async function fetchBooks() {
+        const booksFromAPI = await getBooks()
+        setBooks(booksFromAPI)
+    }
+
+    async function insertBookmark(id) {
+        await insertBookmarkService(id)
+        alert('Book inserted in bookmarks')
+    }
+
     return (
         <SearchContainer>
             <Heading>Do you know where to start?</Heading>
@@ -58,7 +75,7 @@ export default function Search() {
                 }} 
             />
             { searchedBooks.map( book => (
-                <Book>
+                <Book onClick={() => insertBookmark(book.id)}>
                     <img src={book.image} alt={book.name}/>
                     <p>{book.name}</p>
                 </Book>

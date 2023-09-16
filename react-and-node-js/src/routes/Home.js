@@ -1,6 +1,5 @@
-import Header from './components/Header'
-import Search from './components/Search'
-import RecentLaunches from './components/RecentLaunches'
+import Search from '../components/Search'
+import RecentLaunches from '../components/RecentLaunches'
 import styled from 'styled-components'
 
 const AppContainer = styled.div`
@@ -9,10 +8,9 @@ const AppContainer = styled.div`
   background-image: linear-gradient(90deg, #002F52 35%, #326589 165%);
 `
 
-export default function App() {
+export default function Home() {
   return (
     <AppContainer>
-      <Header/>
       <Search/>
       <RecentLaunches/>
     </AppContainer>

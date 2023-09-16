@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import Logo from '../Logo'
 import MenuIcons from '../MenuIcons';
 import MenuOptions from '../MenuOptions'
@@ -12,7 +13,9 @@ const AppHeader = styled.header`
 export default function Header() {
     return (
         <AppHeader>
-          <Logo/>
+          <Link to='/'>
+            <Logo/>
+          </Link>
           <MenuOptions/>
           <MenuIcons/>
         </AppHeader>
