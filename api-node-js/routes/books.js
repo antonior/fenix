@@ -1,11 +1,11 @@
 const {Router} = require("express")
-const {getBooks, getBook, addBook, editBook, deleteBook} = require("../controllers/books")
+const BookController = require("../controllers/books")
 const router = Router()
 
-router.get('/', getBooks)
-router.get('/:id', getBook)
-router.post('/', addBook)
-router.patch('/:id', editBook)
-router.delete('/:id', deleteBook)
+router.get('/', BookController.getBooks)
+router.get('/:id', BookController.getBook)
+router.post('/', BookController.addBook)
+router.patch('/:id', BookController.editBook)
+router.delete('/:id', BookController.deleteBook)
 
 module.exports = router
