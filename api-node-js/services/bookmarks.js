@@ -1,22 +1,20 @@
-const fs = require("fs")
-const Bookmark = require("../database/bookmark")
-const Book = require("../database/book")
+const BookmarkDAO = require("../database/postgres/DAO/BookmarkDAO")
+const BookDAO = require("../database/postgres/DAO/BookDAO")
 
 async function getAllBookmarks() {
-    return await Bookmark.findAll();
+    return await BookmarkDAO.getAll()
 }
 
 async function addBookmark(bookId) {
-    const newBookmark = await Book.findByPk(bookId)
+    const newBookmark = await BookDAO.getById(bookId)
     if (!Number(newBookmark.id)) {
         throw Error('could not find book id')
     }
-    await Bookmark.create({ id: newBookmark.id, name: newBookmark.name})
+    await BookmarkDAO.add({ id: newBookmark.id, name: newBookmark.name})
 }
 
 async function deleteBookmark(id) {
-    const bookmark = await Bookmark.findByPk(id)
-    await bookmark.destroy()
+    await BookmarkDAO.delete(id)
 }
 
 module.exports = {

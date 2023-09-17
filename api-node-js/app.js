@@ -8,9 +8,9 @@ const port = 8000;
 
 //initialize database
 (async () => {
-    const database = require('./database/db');
-    const Book = require('./database/book');
-    const Bookmark = require('./database/bookmark');
+    const database = require('./database/postgres/db');
+    const Book = require('./database/postgres/book');
+    const Bookmark = require('./database/postgres/bookmark');
 
     try {
         const result = await database.sync();
@@ -28,3 +28,5 @@ app.use("/bookmarks", bookmarksRoute)
 app.listen(port, () => {
     console.log(`Listening port ${port}`)
 })
+
+//mongodb+srv://ajrdc:<password>@cluster0.vubgg8e.mongodb.net/?retryWrites=true&w=majority

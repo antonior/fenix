@@ -1,20 +1,19 @@
-const fs = require("fs")
-const Book = require("../database/book")
+const BookDAO = require("../database/postgres/DAO/BookDAO")
 
 async function getAllBooks() {
-    return await Book.findAll();
+    return await BookDAO.getAll()
 }
 
 async function getBookById(id) {
-    return await Book.findByPk(id)
+    return await BookDAO.getById(id)
 }
 
 async function addBook(newBook) {
-    await Book.create(newBook)
+    await BookDAO.add(newBook)
 }
 
 async function editBook(id, changes) {
-    let editedBook = await Book.findByPk(id)
+    let editedBook = await BookDAO.getById(id)
     
     if (Object.hasOwn(changes, "name")) {
         editedBook.name = changes.name
@@ -24,12 +23,11 @@ async function editBook(id, changes) {
         throw Error("name must not be empty")
     }
     
-    await editedBook.save()
+    await await BookDAO.edit(editedBook)
 }
 
 async function deleteBook(id) {
-    const book = await Book.findByPk(id)
-    await book.destroy()
+    await BookDAO.delete(id)
 }
 
 module.exports = {
