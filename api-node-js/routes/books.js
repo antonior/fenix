@@ -1,5 +1,5 @@
 const {Router} = require("express")
-const BookController = require("../controllers/books")
+const BookController = require("../controllers/BookController")
 const router = Router()
 
 router.get('/', BookController.getBooks)

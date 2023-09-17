@@ -1,4 +1,4 @@
-const BookService = require("../services/books")
+const BookService = require("../services/BookService")
 const HttpStatus = require('http-status-codes')
 
 class BookController {

@@ -1,4 +1,4 @@
-const BookmarkService = require("../services/bookmarks")
+const BookmarkService = require("../services/BookmarkService")
 const HttpStatus = require('http-status-codes')
 
 class BookmarkController {
