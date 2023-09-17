@@ -7,18 +7,8 @@ const app = express()
 const port = 8000;
 
 //initialize database
-(async () => {
-    const database = require('./database/postgres/db');
-    const Book = require('./database/postgres/book');
-    const Bookmark = require('./database/postgres/bookmark');
-
-    try {
-        const result = await database.sync();
-        console.log(result);
-    } catch (error) {
-        console.log(error);
-    }
-})();
+const initializeDatabase = require("./database/postgres/dbInitializer")
+initializeDatabase()
 
 app.use(express.json())
 app.use(cors({origin: "*"}))
