@@ -1,10 +1,13 @@
-const BookmarkService = require("../services/BookmarkService")
 const HttpStatus = require('http-status-codes')
 
 class BookmarkController {
-    static async getBookmarks(req, res) {
+    constructor(opts) {
+        this.BookmarkService = opts.BookmarkService
+    }
+
+    async getBookmarks(req, res) {
         try {
-            const bookmarks = await BookmarkService.getAllBookmarks()
+            const bookmarks = await this.BookmarkService.getAllBookmarks()
             res.send(bookmarks)
         } catch (error) {
             res.status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR)
@@ -12,7 +15,7 @@ class BookmarkController {
         }
     }
 
-    static async addBookmark(req, res) {
+    async addBookmark(req, res) {
         try {
             const bookId = req.params.id
             if (!bookId) {
@@ -21,7 +24,7 @@ class BookmarkController {
                 return
             }
 
-            await BookmarkService.addBookmark(bookId)
+            await this.BookmarkService.addBookmark(bookId)
 
             res.status(HttpStatus.StatusCodes.CREATED)
             res.send("Bookmark added")
@@ -31,11 +34,11 @@ class BookmarkController {
         }
     }
 
-    static async deleteBookmark(req, res) {
+    async deleteBookmark(req, res) {
         try {
             const id = req.params.id
             if (id) {
-                await BookmarkService.deleteBookmark(id)
+                await this.BookmarkService.deleteBookmark(id)
                 res.send(`Bookmark ${id} deleted`)
             } else {
                 res.status(HttpStatus.StatusCodes.UNPROCESSABLE_ENTITY)

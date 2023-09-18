@@ -1,15 +1,15 @@
 const Bookmark = require("../models/bookmark")
 
 class BookmarkDAO {
-    static async getAll() {
+    async getAll() {
         return await Bookmark.find({})
     }
     
-    static async add(bookmark) {
+    async add(bookmark) {
         return await Bookmark.create(bookmark)
     }
     
-    static async delete(id) {
+    async delete(id) {
         await Bookmark.findByIdAndDelete(id)
     }
 }

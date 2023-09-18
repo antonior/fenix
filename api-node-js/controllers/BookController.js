@@ -1,11 +1,13 @@
-const BookService = require("../services/BookService")
 const HttpStatus = require('http-status-codes')
 
 class BookController {
+    constructor(opts) {
+        this.BookService = opts.BookService
+    }
     
-    static async getBooks(req, res) {
+    async getBooks(req, res) {
         try {
-            const books = await BookService.getAllBooks()
+            const books = await this.BookService.getAllBooks()
             res.send(books)
         } catch (error) {
             res.status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR)
@@ -13,11 +15,11 @@ class BookController {
         }
     }
 
-    static async getBook(req, res) {
+    async getBook(req, res) {
         try {
             const id = req.params.id
             if (id) {
-                const book = await BookService.getBookById(id)
+                const book = await this.BookService.getBookById(id)
                 res.send(book)
             } else {
                 res.status(HttpStatus.StatusCodes.UNPROCESSABLE_ENTITY)
@@ -29,7 +31,7 @@ class BookController {
         }
     }
 
-    static async addBook(req, res) {
+    async addBook(req, res) {
         try {
             const newBook = req.body
             if (newBook.id || newBook._id) {
@@ -43,7 +45,7 @@ class BookController {
                 return
             }
 
-            await BookService.addBook(newBook)
+            await this.BookService.addBook(newBook)
 
             res.status(HttpStatus.StatusCodes.CREATED)
             res.send("Book added")
@@ -53,7 +55,7 @@ class BookController {
         }
     }
 
-    static async editBook(req, res) {
+    async editBook(req, res) {
         try {
             const id = req.params.id
             if (!id) {
@@ -63,7 +65,7 @@ class BookController {
             }
             const changes = req.body
             
-            await BookService.editBook(id, changes)
+            await this.BookService.editBook(id, changes)
 
             res.status(HttpStatus.StatusCodes.OK)
             res.send("Book edited")
@@ -73,11 +75,11 @@ class BookController {
         }
     }
 
-    static async deleteBook(req, res) {
+    async deleteBook(req, res) {
         try {
             const id = req.params.id
             if (id) {
-                await BookService.deleteBook(id)
+                await this.BookService.deleteBook(id)
                 res.send(`Book ${id} deleted`)
             } else {
                 res.status(HttpStatus.StatusCodes.UNPROCESSABLE_ENTITY)

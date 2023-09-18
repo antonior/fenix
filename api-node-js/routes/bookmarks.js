@@ -1,9 +1,12 @@
-const {Router} = require("express")
-const BookmarkController = require("../controllers/BookmarkController")
-const router = Router()
+function bookmarksRouter(bookmarkController) {
+    const {Router} = require("express")
+    const router = Router()
 
-router.get('/', BookmarkController.getBookmarks)
-router.post('/:id', BookmarkController.addBookmark)
-router.delete('/:id', BookmarkController.deleteBookmark)
+    router.get('/', (req, res) => { return bookmarkController.getBookmarks(req, res) })
+    router.post('/:id', (req, res) => { return bookmarkController.addBookmark(req, res) })
+    router.delete('/:id', (req, res) => { return bookmarkController.deleteBookmark(req, res) })
 
-module.exports = router
+    return router
+}
+
+module.exports = bookmarksRouter

@@ -1,21 +1,22 @@
-const BookDAO = process.env.DATABASE_OF_CHOICE === "postgres" ? require("../database/postgres/DAO/BookDAO") : require("../database/mongodb/DAO/BookDAO")
-
-
 class BookService {
-    static async getAllBooks() {
-        return await BookDAO.getAll()
+    constructor(opts) {
+        this.BookDAO = opts.BookDAO
     }
 
-    static async getBookById(id) {
-        return await BookDAO.getById(id)
+    async getAllBooks() {
+        return await this.BookDAO.getAll()
     }
 
-    static async addBook(newBook) {
-        await BookDAO.add(newBook)
+    async getBookById(id) {
+        return await this.BookDAO.getById(id)
     }
 
-    static async editBook(id, changes) {
-        let editedBook = await BookDAO.getById(id)
+    async addBook(newBook) {
+        await this.BookDAO.add(newBook)
+    }
+
+    async editBook(id, changes) {
+        let editedBook = await this.BookDAO.getById(id)
         
         if (Object.hasOwn(changes, "name")) {
             editedBook.name = changes.name
@@ -25,11 +26,11 @@ class BookService {
             throw Error("name must not be empty")
         }
         
-        await await BookDAO.edit(editedBook)
+        await await this.BookDAO.edit(editedBook)
     }
 
-    static async deleteBook(id) {
-        await BookDAO.delete(id)
+    async deleteBook(id) {
+        await this.BookDAO.delete(id)
     }
 }
 
