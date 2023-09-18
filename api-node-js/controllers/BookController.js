@@ -16,7 +16,7 @@ class BookController {
     static async getBook(req, res) {
         try {
             const id = req.params.id
-            if (Number(id)) {
+            if (id) {
                 const book = await BookService.getBookById(id)
                 res.send(book)
             } else {
@@ -32,7 +32,7 @@ class BookController {
     static async addBook(req, res) {
         try {
             const newBook = req.body
-            if (newBook.id) {
+            if (newBook.id || newBook._id) {
                 res.status(HttpStatus.StatusCodes.UNPROCESSABLE_ENTITY)
                 res.send("Do not set an id. It will be set automatically")
                 return
@@ -56,7 +56,7 @@ class BookController {
     static async editBook(req, res) {
         try {
             const id = req.params.id
-            if (!Number(id)) {
+            if (!id) {
                 res.status(HttpStatus.StatusCodes.UNPROCESSABLE_ENTITY)
                 res.send("Invalid id")
                 return
@@ -76,7 +76,7 @@ class BookController {
     static async deleteBook(req, res) {
         try {
             const id = req.params.id
-            if (Number(id)) {
+            if (id) {
                 await BookService.deleteBook(id)
                 res.send(`Book ${id} deleted`)
             } else {

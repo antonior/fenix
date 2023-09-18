@@ -1,4 +1,5 @@
-const BookDAO = require("../database/postgres/DAO/BookDAO")
+const BookDAO = process.env.DATABASE_OF_CHOICE === "postgres" ? require("../database/postgres/DAO/BookDAO") : require("../database/mongodb/DAO/BookDAO")
+
 
 class BookService {
     static async getAllBooks() {

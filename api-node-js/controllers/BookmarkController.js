@@ -15,7 +15,7 @@ class BookmarkController {
     static async addBookmark(req, res) {
         try {
             const bookId = req.params.id
-            if (!Number(bookId)) {
+            if (!bookId) {
                 res.status(HttpStatus.StatusCodes.UNPROCESSABLE_ENTITY)
                 res.send("Invalid id")
                 return
@@ -34,7 +34,7 @@ class BookmarkController {
     static async deleteBookmark(req, res) {
         try {
             const id = req.params.id
-            if (Number(id)) {
+            if (id) {
                 await BookmarkService.deleteBookmark(id)
                 res.send(`Bookmark ${id} deleted`)
             } else {
