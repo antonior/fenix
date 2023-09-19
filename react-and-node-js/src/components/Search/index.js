@@ -1,7 +1,7 @@
 import Input from "../Input"
 import styled from "styled-components"
 import { useEffect, useState } from "react"
-import { getBooks } from "../../services/books"
+import { getBooks, addBook } from "../../services/books"
 import { insertBookmark as insertBookmarkService } from "../../services/bookmarks"
 
 const SearchContainer = styled.section`
@@ -44,9 +44,27 @@ const Book = styled.div`
     }
 `
 
+const NewBookArea = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    border: 1px solid white;
+
+    p {
+        width: 200px;
+    }
+
+    img {
+        width: 100px;
+    }
+`
+
 export default function Search() {
     const [searchedBooks, setSearchedBooks] = useState([])
     const [books, setBooks] = useState([])
+    const [newBookImage, setNewBookImage] = useState("")
+    const [newBookName, setNewBookName] = useState("")
 
     useEffect( () => {
         fetchBooks()
@@ -62,6 +80,26 @@ export default function Search() {
         alert('Book inserted in bookmarks')
     }
 
+    function insertBook(event) {
+        var reader = new FileReader()
+        reader.readAsDataURL(event.target.files[0])
+        reader.onload = () => {
+            setNewBookImage(reader.result)
+        }
+        reader.onerror = error => {
+            console.log("Error: ", error);
+        }
+    }
+
+    function changeNewBookName(event) {
+        setNewBookName(event.target.value)
+    }
+
+    async function addNewBook() {
+        const result = await addBook(newBookName, newBookImage)
+        console.log("Result do addNewBook: ", result);
+    }
+
     return (
         <SearchContainer>
             <Heading>Do you know where to start?</Heading>
@@ -75,11 +113,18 @@ export default function Search() {
                 }} 
             />
             { searchedBooks.map( book => (
-                <Book onClick={() => insertBookmark(book.id)}>
+                <Book onClick={() => insertBookmark(book._id)}>
                     <img src={book.image} alt={book.name}/>
                     <p>{book.name}</p>
                 </Book>
             ))}
+            <NewBookArea>
+                <input accept="image/*" type="file" onChange={insertBook} />
+                <input type="text" onChange={changeNewBookName} />
+                <button onClick={addNewBook}>Criar</button>
+                <br/>
+                <img src={newBookImage} alt={newBookName} />
+            </NewBookArea>
         </SearchContainer>
     )
 }

@@ -65,7 +65,7 @@ export default function Bookmarks() {
        <BookmarksContainer>
          {
            bookmarks.length !== 0 ? bookmarks.map(bookmark => (
-             <BookmarkItem onClick={ () => onclickdeleteBookmark(bookmark.id) }>
+             <BookmarkItem onClick={ () => onclickdeleteBookmark(bookmark._id) }>
                <p>{bookmark.name}</p>
                <img src={bookImage} alt={bookmark.name}/>
              </BookmarkItem>

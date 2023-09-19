@@ -7,6 +7,12 @@ async function getBooks() {
     return response.data
 }
 
+async function addBook(name, image) {
+    const response = await booksAPI.post('/', {name: name, image: image})
+    return response.data
+}
+
 export {
-    getBooks
+    getBooks,
+    addBook
 }
