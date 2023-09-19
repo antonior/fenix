@@ -2,7 +2,7 @@ const Sequelize = require('sequelize');
 const database = require('./db');
 
 const Bookmark = database.define('bookmark', {
-    id: {
+    _id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         primaryKey: true,

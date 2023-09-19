@@ -2,7 +2,7 @@ const Sequelize = require('sequelize');
 const database = require('./db');
 
 const Book = database.define('book', {
-    id: {
+    _id: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
         allowNull: false,
@@ -11,6 +11,9 @@ const Book = database.define('book', {
     name: {
         type: Sequelize.STRING,
         allowNull: false
+    },
+    image: {
+        type: Sequelize.TEXT
     }
 })
 

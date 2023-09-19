@@ -10,10 +10,10 @@ class BookmarkService {
     
     async addBookmark(bookId) {
         const newBookmark = await this.BookDAO.getById(bookId)
-        if (!newBookmark.id) {
+        if (!newBookmark._id) {
             throw Error('could not find book id')
         }
-        await this.BookmarkDAO.add({ id: newBookmark.id, name: newBookmark.name})
+        await this.BookmarkDAO.add({ _id: newBookmark._id, name: newBookmark.name})
     }
     
     async deleteBookmark(id) {
