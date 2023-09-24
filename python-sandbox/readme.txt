@@ -28,3 +28,6 @@ http://127.0.0.1:8000/admin/
 # after any models change run the following commands
 python manage.py makemigrations
 python manage.py migrate
+
+# after installing any new dependency run
+pip freeze > requirements.txt
