@@ -1,3 +1,6 @@
+# install all dependencies of the project
+pip install -r requirements.txt
+
 # create an .env file with a SECRET_KEY entry
 python manage.py shell
 from django.core.management.utils import get_random_secret_key
